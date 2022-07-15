@@ -8,7 +8,9 @@ RUN npm install
 FROM base AS build
 
 COPY . /opt/app
-RUN sh ./scripts/build.sh
+
+RUN npm exec prisma generate
+RUN npm exec tsc
 
 FROM base as production
 
