@@ -20,6 +20,4 @@ COPY --from=build /opt/app/build /opt/app/build
 COPY --from=build /opt/app/scripts /opt/app/scripts
 COPY --from=build /opt/app/prisma /opt/app/prisma
 
-RUN chmod
-
 CMD sh ./scripts/start.sh
