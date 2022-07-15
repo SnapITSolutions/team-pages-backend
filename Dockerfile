@@ -7,10 +7,10 @@ RUN npm install
 
 FROM base AS build
 
+# This is here to cause an error if the user forgot to make an .env
 COPY . /opt/app
 
-RUN npm exec prisma generate
-RUN npm exec tsc
+RUN sh ./scripts/build.sh
 
 FROM base as production
 

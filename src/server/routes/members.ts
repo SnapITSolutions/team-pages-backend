@@ -1,4 +1,5 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
+import joi from 'joi';
 import { getConfig } from '../../config.js';
 import * as db from '../../database/index.js';
 
@@ -6,12 +7,30 @@ type GetMemberParam = {
   id?: string;
 };
 
-// const updateData = joi.object({
-//   firstname: joi.string()
-//     .min(3)
-//     .max(20)
-//     .required(true),
-// });
+const avgString = joi.string()
+  .min(3)
+  .max(20)
+  .required();
+const avgOptString = joi.string()
+  .min(3)
+  .max(20);
+const avgParagraph = joi.string()
+  .min(0)
+  .max(2000)
+  .required();
+
+const memberData = joi.object({
+  // Personal
+  firstname: avgString,
+  lastname: avgString,
+  title: avgString,
+  pronouns: avgOptString,
+
+  interests: avgParagraph,
+  joblikes: avgParagraph,
+  // Socials
+  linkedin: avgOptString,
+});
 
 function authCheck(
   req: FastifyRequest,
@@ -48,14 +67,18 @@ export async function postMembers(
   req: FastifyRequest,
   rep: FastifyReply,
 ): Promise<void> {
-  if (!authCheck(req, rep)) { }
+  if (!authCheck(req, rep)) { return; }
+  const data = req.body as any;
+  memberData.validate(data);
 }
 
 export async function putMember(
   req: FastifyRequest,
   rep: FastifyReply,
 ): Promise<void> {
-  if (!authCheck(req, rep)) { }
+  if (!authCheck(req, rep)) { return; }
+  const data = req.body as any;
+  memberData.validate(data);
 }
 
 /**
