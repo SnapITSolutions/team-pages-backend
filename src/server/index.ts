@@ -1,5 +1,6 @@
 import fastify, { FastifyInstance } from 'fastify';
 import {
+  deleteMember,
   getMember, getMembers,
   postMembers, putMember,
 } from './routes/index.js';
@@ -12,6 +13,7 @@ function addRoutes(): void {
   server.get('/members', getMembers);
   server.put('/members/:id', putMember);
   server.get('/members/:id', getMember);
+  server.delete('/members/:id', deleteMember);
 }
 
 export default function getServer(): FastifyInstance {

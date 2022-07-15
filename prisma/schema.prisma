@@ -12,17 +12,16 @@ datasource db {
 
 model TeamMember {
   id            String  @id @default(uuid())
-  // Identity
+  // Personal
   firstName     String
   lastName      String
+  jobLikes      String
+  interests     String
+  pronouns      String?
   // Job
   title         String
   startYear     Int
   wasApprentice Boolean
-  // Personal
-  pronouns      String?
-  jobLikes      String
-  interests     String
   // Socials
   linkedin      String?
   github        String?

@@ -26,8 +26,32 @@ export async function addMember(
 export async function setMember(
   id: string,
   data: Prisma.TeamMemberCreateInput,
-): Promise<TeamMember> {
+): Promise<TeamMember | null> {
   const client = getClient();
-  const result = await client.teamMember.update({ where: { id }, data });
-  return result;
+  try {
+    const result = await client.teamMember.update({ where: { id }, data });
+    return result;
+  } catch (optErr) {
+    const err = optErr as Error;
+    if (err.message.includes('does not exist')) {
+      return null;
+    }
+    throw err;
+  }
+}
+
+export async function deleteMember(
+  id: string,
+): Promise<boolean> {
+  const client = getClient();
+  try {
+    await client.teamMember.delete({ where: { id } });
+    return true;
+  } catch (optErr) {
+    const err = optErr as Error;
+    if (err.message.includes('does not exist')) {
+      return false;
+    }
+    throw err;
+  }
 }
