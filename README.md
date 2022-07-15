@@ -1,9 +1,5 @@
 # Setup
 
-Watch this video (commands provided below)
-
-![Setup Docker](./docs/setting%20up%20via%20docker.mov)
-
 Open your terminal and run the following commands.
 
 ```sh

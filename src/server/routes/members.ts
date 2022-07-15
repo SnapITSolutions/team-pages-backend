@@ -91,7 +91,7 @@ function checkMemberData<T>(
   req: FastifyRequest,
   rep: FastifyReply,
 ): T[] | null {
-  function validate(data: T): T | null {
+  const validate = (data: T): T | null => {
     const result = memberData.validate(data);
     if (result.error !== undefined) {
       rep.code(400);
@@ -103,7 +103,7 @@ function checkMemberData<T>(
       return null;
     }
     return result.value;
-  }
+  };
 
   const result: T[] = [];
   const members = req.body instanceof Array
@@ -136,7 +136,7 @@ function checkMemberData<T>(
  * @param {FastifyReply} rep
  */
 export async function getMembers(
-  req: FastifyRequest,
+  _: FastifyRequest,
   rep: FastifyReply,
 ): Promise<void> {
   const members = await db.getMembers();
@@ -152,10 +152,10 @@ export async function getMember(
   req: FastifyRequest,
   rep: FastifyReply,
 ): Promise<void> {
-  function fail<T extends Object>(code: number, payload: T): void {
+  const fail = <T>(code: number, payload: T): void => {
     rep.status(code);
     rep.send(payload);
-  }
+  };
 
   const { id } = req.params as GetMemberParam;
   console.debug(`Received "${id}"`);
