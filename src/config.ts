@@ -1,5 +1,3 @@
-import { v4 as uuid } from 'uuid';
-
 export type Config = {
   port: number;
   token: string;
@@ -23,8 +21,8 @@ export function getConfig(): Config {
   if (token === undefined && mode === 'prod') {
     throw new Error('If SERVER_MODE is prod then a token should be set.');
   } else if (token === undefined) {
-    token = uuid();
-    console.info(`Access token generated ${token}`);
+    token = 'DEV_TOKEN';
+    console.info(`Access token is ${token}`);
   }
 
   config = {
