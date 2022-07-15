@@ -8,7 +8,6 @@ RUN npm install
 FROM base AS build
 
 COPY . /opt/app
-RUN chmod +x ./scripts/build.sh
 RUN sh ./scripts/build.sh
 
 FROM base as production
@@ -19,6 +18,6 @@ COPY --from=build /opt/app/build /opt/app/build
 COPY --from=build /opt/app/scripts /opt/app/scripts
 COPY --from=build /opt/app/prisma /opt/app/prisma
 
-RUN chmod +x ./scripts/start.sh
+RUN chmod
 
 CMD sh ./scripts/start.sh
