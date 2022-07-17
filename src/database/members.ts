@@ -15,6 +15,12 @@ export async function getMember(id: string): Promise<TeamMember | null> {
   return result;
 }
 
+export async function checkMember(id: string): Promise<boolean> {
+  const client = getClient();
+  const count = await client.teamMember.count({ where: { id } });
+  return count > 0;
+}
+
 export async function addMember(
   data: Prisma.TeamMemberCreateInput,
 ): Promise<TeamMember> {
