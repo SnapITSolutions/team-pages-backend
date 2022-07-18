@@ -1,4 +1,4 @@
-FROM node:16-alpine AS base
+FROM node:16 AS base
 
 WORKDIR /opt/app
 COPY package.json /opt/app
@@ -10,7 +10,7 @@ FROM base AS build
 # This is here to cause an error if the user forgot to make an .env
 COPY . /opt/app
 
-RUN sh ./scripts/build.sh
+RUN bash ./scripts/build.sh
 
 FROM base as production
 
@@ -25,4 +25,4 @@ COPY --from=build /opt/app/build /opt/app/build
 COPY --from=build /opt/app/scripts /opt/app/scripts
 COPY --from=build /opt/app/prisma /opt/app/prisma
 
-CMD sh ./scripts/start.sh
+CMD bash ./scripts/start.sh
