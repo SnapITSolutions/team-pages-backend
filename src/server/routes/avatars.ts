@@ -1,46 +1,11 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import { File } from 'fastify-multer/lib/interfaces';
-import { getConfig } from '../../config.js';
-import { checkMember } from '../../database/members.js';
 import { existsSync } from 'node:fs';
-
-function createAvatarPath(idOrFile: string, ext?: string): string {
-  const config = getConfig();
-  const absolute = path.join(
-    config.avatarPath,
-    ext !== undefined ? `${idOrFile}.${ext}`: idOrFile,
-  );
-  return absolute;
-}
-
-async function getAvatarPath(
-  id: string,
-  rep?: FastifyReply,
-): Promise<string | null> {
-  const config = getConfig();
-  const files = await fs.readdir(config.avatarPath);
-  for (let i = 0; i < files.length; i += 1) {
-    const fileName = files[i];
-    const absolute = path.join(config.avatarPath, fileName);
-    const [name] = fileName.split('.');
-
-    if (name === id) {
-      return path.resolve(absolute);
-    }
-  }
-
-  if (rep !== undefined) {
-    rep.status(404);
-    await rep.send({
-      errcode: 'NOT_FOUND',
-      message: 'This user does not have an avatar.',
-    });
-  }
-
-  return null;
-}
+import { File } from 'fastify-multer/lib/interfaces';
+import { checkMember } from '../../database/members.js';
+import { createAvatarPath, getAvatarPath } from '../../database/avatars.js';
+import * as db from '../../database/index.js';
 
 export async function setAvatar(
   req: FastifyRequest,
@@ -61,6 +26,7 @@ export async function setAvatar(
   const file = req.file as File;
   const imgP = await getAvatarPath(id);
   const ext = path.extname(file.originalname).substring(1);
+  const name = `${id}.${ext}`
 
   if (ext.length === 0) {
     rep.code(400);
@@ -88,6 +54,7 @@ export async function setAvatar(
   if (imgP !== null) {
     await fs.unlink(imgP).catch(console.error);
   }
+  await db.setAvatar(id, name);
 }
 
 export async function deleteAvatar(

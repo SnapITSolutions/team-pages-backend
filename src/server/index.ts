@@ -30,7 +30,7 @@ function addRoutes(): void {
   server.post('/members', postMembers);
   server.get('/members', getMembers);
   server.head('/members/:id', idCheck(headMember));
-  server.get('/members/:id', authCheck(idCheck(getMember)));
+  server.get('/members/:id', idCheck(getMember));
   server.put('/members/:id', authCheck(idCheck(putMember)));
   server.delete('/members/:id', authCheck(idCheck(deleteMember)));
 

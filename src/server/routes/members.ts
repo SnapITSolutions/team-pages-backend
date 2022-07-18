@@ -1,11 +1,10 @@
 import { Prisma, TeamMember } from '@prisma/client';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import * as db from '../../database/index.js';
-import { checkMemberData } from '../util.js';
+import checkMemberData from '../../joi/index.js';
 
 /**
  * GET /members
- * @param {FastifyRequest} req
  * @param {FastifyReply} rep
  */
 export async function getMembers(
@@ -18,11 +17,11 @@ export async function getMembers(
 
 /**
  * GET /members/:id
- * @param {FastifyRequest} req
  * @param {FastifyReply} rep
+ * @param {string} id
  */
 export async function getMember(
-  req: FastifyRequest,
+  _: FastifyRequest,
   rep: FastifyReply,
   id: string,
 ): Promise<void> {
@@ -46,12 +45,11 @@ export async function getMember(
 
 /**
  * HEAD /members/:id
- * @param req
- * @param rep
- * @param id
+ * @param {FastifyReply} rep
+ * @param {string} id
  */
 export async function headMember(
-  req: FastifyRequest,
+  _: FastifyRequest,
   rep: FastifyReply,
   id: string,
 ): Promise<void> {
@@ -107,11 +105,11 @@ export async function putMember(
 
 /**
  * DELETE /members/:id
- * @param {FastifyRequest} req
  * @param {FastifyReply} rep
+ * @param {string} id
  */
 export async function deleteMember(
-  req: FastifyRequest,
+  _: FastifyRequest,
   rep: FastifyReply,
   id: string,
 ): Promise<void> {

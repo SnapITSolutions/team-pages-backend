@@ -10,4 +10,5 @@ export function getClient(): PrismaClient {
   return client;
 }
 
+export * from './avatars.js';
 export * from './members.js';

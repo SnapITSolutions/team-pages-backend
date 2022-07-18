@@ -3,14 +3,23 @@ import { getClient } from './index.js';
 
 export async function getMembers(): Promise<TeamMember[]> {
   const client = getClient();
-  const result = await client.teamMember.findMany();
+  const result = await client.teamMember.findMany({
+    include: {
+      avatar: true,
+    },
+  });
   console.debug('Resolved members', result);
   return result;
 }
 
 export async function getMember(id: string): Promise<TeamMember | null> {
   const client = getClient();
-  const result = await client.teamMember.findFirst({ where: { id } });
+  const result = await client.teamMember.findFirst({
+    where: { id },
+    include: {
+      avatar: true,
+    },
+  });
   console.debug('Resolved member', result);
   return result;
 }
