@@ -1,5 +1,5 @@
 import joi from 'joi';
-import * as md from './memberdata';
+import * as md from './memberdata.js';
 
 const avgParagraph = joi.string()
   .max(2000)
