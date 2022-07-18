@@ -6,6 +6,7 @@ export type Config = {
   token: string;
   mode: string;
   avatarPath: string;
+  fileLimit: number;
 }
 
 let config: null | Config = null;
@@ -55,6 +56,19 @@ function getToken(mode: string): string {
   return token;
 }
 
+function getFileSize(): number {
+  let size = process.env.FILE_SIZE_LIMIT;
+  if (size === undefined) {
+    size = '8';
+    console.warn('File size limit defaulted to 8MB');
+  }
+  let bytes = Number(size);
+  if (Number.isNaN(bytes)) {
+    throw new Error('The file size limit provided is not a number.');
+  }
+  return bytes * 1000000;
+}
+
 export function getConfig(): Config {
   if (config !== null) {
     return config;
@@ -62,11 +76,13 @@ export function getConfig(): Config {
   const port = getPort();
   const mode = getMode();
   const avtp = getAvatarFolder();
+  const size = getFileSize();
   const token = getToken(mode);
 
   config = {
     token, port, mode, 
     avatarPath: avtp,
+    fileLimit: size,
   };
 
   return config;

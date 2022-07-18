@@ -17,7 +17,6 @@ import { authguard as authCheck, idCheck } from './util.js';
 
 // NOTE(dylhack): MB * MB in BYTES this
 //                is currently 1 MB
-const mxImgSize = 1 * 1000000;
 const mimeTypes = ['image/gif', 'image/jpeg', 'image/png'];
 const supported = mimeTypes.join(' ');
 let svrinstance: null | FastifyInstance = null;
@@ -40,7 +39,7 @@ function addRoutes(): void {
     storage,
     dest: config.avatarPath,
     limits: {
-      fileSize: mxImgSize,
+      fileSize: config.fileLimit,
       files: 1,
     },
     fileFilter: (req: FastifyRequest, file: File, callback: FileFilterCallback) => {
