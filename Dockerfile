@@ -14,6 +14,11 @@ RUN sh ./scripts/build.sh
 
 FROM base as production
 
+ENV DATABASE_URL="postgres://postgres:supersecurepassword@postgres/postgres?schema=snapitteam"
+ENV PORT="3001"
+ENV SERVER_MODE="dev"
+ENV TOKEN="DEV_TOKEN"
+
 COPY --from=build /opt/app/package.json /opt/app/package.json
 COPY --from=build /opt/app/node_modules /opt/app/node_modules
 COPY --from=build /opt/app/build /opt/app/build
